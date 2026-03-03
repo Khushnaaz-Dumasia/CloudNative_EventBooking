@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-service-deployment
+  labels:
+    app: booking-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: booking-service
+  template:
+    metadata:
+      labels:
+        app: booking-service
+    spec:
+      containers:
+      - name: booking-service
+        image: youracrname.azurecr.io/booking-service:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SQLALCHEMY_DATABASE_URL
+          value: "sqlite:///./booking.db" # Replace with Azure SQL string
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: booking-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: booking-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

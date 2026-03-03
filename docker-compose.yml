@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+
+  booking_service:
+    build: ./booking_service
+    ports:
+      - "8001:8000"
+
+  event_service:
+    build: ./event_service
+    ports:
+      - "8002:8000"
+
+  user_service:
+    build: ./user_service
+    ports:
+      - "8003:8000"
