@@ -4,9 +4,20 @@ from pydantic import BaseModel
 import models, database
 from database import engine, SessionLocal
 
-models.Base.metadata.create_all(bind=engine)
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # For development only; narrow this down for production
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+models.Base.metadata.create_all(bind=engine)
+
+
 
 class BookingCreate(BaseModel):
     user_id: int

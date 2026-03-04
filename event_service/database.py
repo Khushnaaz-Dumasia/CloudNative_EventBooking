@@ -1,7 +1,12 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./event.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DB_PATH = os.path.join(BASE_DIR, "event.db")
+
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 # To use Azure SQL Server later, swap the URL.
 
 engine = create_engine(

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cloud-Native Event Booking</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background: #f4f4f4; }
+        .container { display: flex; gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { cursor: pointer; background: #0078d4; color: white; border: none; padding: 5px 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Event Booking System</h1>
+    <div class="container">
+        <div class="card">
+            <h2>Users</h2>
+            <input type="text" id="userName" placeholder="Name">
+            <input type="email" id="userEmail" placeholder="Email">
+            <button onclick="createUser()">Add User</button>
+            <ul id="userList"></ul>
+        </div>
+
+        <div class="card">
+            <h2>Events</h2>
+            <ul id="eventList"></ul>
+        </div>
+
+        <div class="card">
+            <h2>Current Bookings</h2>
+            <ul id="bookingList"></ul>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
