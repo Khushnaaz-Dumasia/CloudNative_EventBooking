@@ -21,6 +21,7 @@ models.Base.metadata.create_all(bind=engine)
 class EventCreate(BaseModel):
     title: str
     location: str
+    date_time: str
 
 class EventResponse(EventCreate):
     id: int
@@ -41,7 +42,7 @@ def read_root():
 
 @app.post("/events", response_model=EventResponse)
 def create_event(event: EventCreate, db: Session = Depends(get_db)):
-    new_event = models.Event(title=event.title, location=event.location)
+    new_event = models.Event(title=event.title, location=event.location, date_time=event.date_time)
     db.add(new_event)
     db.commit()
     db.refresh(new_event)
@@ -49,5 +50,12 @@ def create_event(event: EventCreate, db: Session = Depends(get_db)):
 
 @app.get("/events", response_model=list[EventResponse])
 def get_events(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    events = db.query(models.Event).offset(skip).limit(limit).all()
-    return events
+    return db.query(models.Event).offset(skip).limit(limit).all()
+
+# CRITICAL: This endpoint allows the Booking Service to verify an event exists
+@app.get("/events/{event_id}", response_model=EventResponse)
+def get_event(event_id: int, db: Session = Depends(get_db)):
+    db_event = db.query(models.Event).filter(models.Event.id == event_id).first()
+    if not db_event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return db_event

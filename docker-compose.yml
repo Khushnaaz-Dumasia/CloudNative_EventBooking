@@ -5,7 +5,7 @@ services:
   booking_service:
     build: ./booking_service
     ports:
-      - "8001:8000"
+      - "8003:8000"
 
   event_service:
     build: ./event_service
@@ -15,4 +15,4 @@ services:
   user_service:
     build: ./user_service
     ports:
-      - "8003:8000"
+      - "8001:8000"

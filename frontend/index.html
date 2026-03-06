@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Cloud-Native Event Booking</title>
-    <style>
-        body { font-family: sans-serif; margin: 20px; background: #f4f4f4; }
-        .container { display: flex; gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 8px; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        button { cursor: pointer; background: #0078d4; color: white; border: none; padding: 5px 10px; border-radius: 4px; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evently - Premium Booking System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <h1>Event Booking System</h1>
     <div class="container">
-        <div class="card">
-            <h2>Users</h2>
-            <input type="text" id="userName" placeholder="Name">
-            <input type="email" id="userEmail" placeholder="Email">
-            <button onclick="createUser()">Add User</button>
-            <ul id="userList"></ul>
+        <div style="position: relative; width: 100%; margin-bottom: 50px;">
+            <h1 class="main-title" style="text-align: center; margin: 0;">Event Booking System</h1>
+            <button onclick="handleLogout()" id="logoutBtn"
+                style="display:none; position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: #ef4444; width: fit-content; padding: 8px 16px; font-size: 0.85rem; height: fit-content;">Logout</button>
         </div>
 
-        <div class="card">
-            <h2>Events</h2>
-            <ul id="eventList"></ul>
+        <div id="auth-section" class="card" style="max-width: 450px; margin-left: auto; margin-right: auto;">
+            <h2>🔐 Login / Sign Up</h2>
+            <div class="auth-grid">
+                <input type="text" id="authName" placeholder="Full Name (for Sign-Up only)">
+                <input type="email" id="authEmail" placeholder="Email Address">
+                <input type="password" id="authPassword" placeholder="Secure Password">
+                <div class="btn-group">
+                    <button onclick="handleAuth('login')">Login</button>
+                    <button onclick="handleAuth('signup')" class="secondary">Create Account</button>
+                </div>
+                <p id="authStatus"></p>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>Current Bookings</h2>
-            <ul id="bookingList"></ul>
+        <div id="app-content" style="display:none;">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h2>👥 Users</h2>
+                    <ul id="userList"></ul>
+                </div>
+                <div class="card">
+                    <h2>🎟️ Events</h2>
+                    <ul id="eventList"></ul>
+                </div>
+                <div class="card">
+                    <h2>📋 My Bookings</h2>
+                    <ul id="bookingList"></ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>

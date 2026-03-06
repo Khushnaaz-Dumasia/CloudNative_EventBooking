@@ -7,3 +7,4 @@ class Event(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), index=True)
     location = Column(String(100))
+    date_time = Column(String)

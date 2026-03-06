@@ -9,6 +9,10 @@ source venv/bin/activate
 # Run this script from the root directory
 # Kill any old versions first
 pkill -f uvicorn
+pkill -f "http.server"
+# More aggressive port-based cleanup
+lsof -ti :8080,8001,8002,8003 | xargs kill -9 2>/dev/null
+sleep 1 # Give them a moment to release ports
 
 echo "Starting Services..."
 
