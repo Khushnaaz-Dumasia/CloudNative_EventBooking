@@ -2,4 +2,4 @@ fastapi
 uvicorn
 pydantic
 sqlalchemy
-pyodbc
+psycopg2-binary

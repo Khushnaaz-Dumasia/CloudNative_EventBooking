@@ -2,20 +2,21 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# 1. Get the absolute path of the directory where THIS file (database.py) is located
+# Default to SQLite for local development
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "user.db")
+DEFAULT_SQLALCHEMY_DATABASE_URL = f"sqlite:///{DEFAULT_DB_PATH}"
 
-# 2. Combine that directory with the database filename
-DB_PATH = os.path.join(BASE_DIR, "user.db")
+# Use DATABASE_URL from environment if available (for AWS RDS/Postgres)
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_SQLALCHEMY_DATABASE_URL)
 
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
-
-# To use Azure SQL Server later, swap the URL to something like:
-# "mssql+pyodbc://username:password@server.database.windows.net/dbname?driver=ODBC+Driver+18+for+SQL+Server"
-
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+# SQLite needs specific connect_args
+if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    )
+else:
+    engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
