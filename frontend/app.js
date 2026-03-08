@@ -1,6 +1,6 @@
-const USER_API = "http://localhost:8001";
-const EVENT_API = "http://localhost:8002";
-const BOOKING_API = "http://localhost:8003";
+const USER_API = "http://k8s-default-userserv-4b1b02608a-7c6b3d9c128fe257.elb.eu-north-1.amazonaws.com";
+const EVENT_API = "http://k8s-default-eventser-c3ad2d7598-3f3770693da645aa.elb.eu-north-1.amazonaws.com";
+const BOOKING_API = "http://k8s-default-bookings-a99fdcbaa2-c2e2965123c87700.elb.eu-north-1.amazonaws.com";
 
 // Fetch and display data on load
 window.onload = () => {
@@ -48,7 +48,8 @@ async function handleAuth(type) {
             status.innerText = "Error: " + data.detail;
         }
     } catch (err) {
-        status.innerText = "Could not connect to User Service.";
+        console.error("Auth Error:", err);
+        status.innerText = "Error: Could not reach the service. (Check console for details)";
     }
 }
 

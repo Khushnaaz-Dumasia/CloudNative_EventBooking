@@ -8,8 +8,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-USER_SERVICE_URL = "http://localhost:8001/users"
-EVENT_SERVICE_URL = "http://localhost:8002/events"
+import os
+
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://localhost:8001") + "/users"
+EVENT_SERVICE_URL = os.getenv("EVENT_SERVICE_URL", "http://localhost:8002") + "/events"
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,10 +55,11 @@ def create_booking(booking: BookingCreate, db: Session = Depends(get_db)):
                 status_code=404, 
                 detail=f"User with ID {booking.user_id} not found in User Service."
             )
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+        print(f"Error connecting to User Service at {USER_SERVICE_URL}: {e}")
         raise HTTPException(
             status_code=503, 
-            detail="User Service is unavailable. Cannot verify user."
+            detail=f"User Service is unavailable. Error: {str(e)}"
         )
 
     # 2. VALIDATE EVENT: Check if the event exists in Event Service

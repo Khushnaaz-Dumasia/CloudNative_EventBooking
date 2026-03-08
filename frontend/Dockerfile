@@ -1,11 +1,13 @@
-# Use the lightweight Nginx alpine image
-FROM nginx:alpine
+FROM python:3.11-slim
 
-# Copy the frontend files to the Nginx default public directory
-COPY index.html /usr/share/nginx/html/
-COPY app.js /usr/share/nginx/html/
+WORKDIR /app
 
-# Expose port 80 for web traffic
+# In cloud, we just serve the static files using a simple http server
+# or we could use Nginx, but sticking to Python is easier for a Demo
+RUN pip install --no-cache-dir http-server || true
+
+COPY . .
+
 EXPOSE 80
 
-# Nginx starts automatically, no CMD needed
+CMD ["python3", "-m", "http.server", "80"]

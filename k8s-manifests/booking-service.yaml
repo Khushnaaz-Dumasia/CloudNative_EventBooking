@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: booking-service
+  template:
+    metadata:
+      labels:
+        app: booking-service
+    spec:
+      containers:
+      - name: booking-service
+        image: 483624980035.dkr.ecr.eu-north-1.amazonaws.com/booking-service:latest
+        ports:
+        - containerPort: 8003
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://postgresadmin:Khushnaaz21@event-db-instance.c9226euwq9t0.eu-north-1.rds.amazonaws.com:5432/postgres?sslmode=require"
+        - name: USER_SERVICE_URL
+          value: "http://user-service"
+        - name: EVENT_SERVICE_URL
+          value: "http://event-service"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: booking-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+spec:
+  type: LoadBalancer
+  selector:
+    app: booking-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8003
